@@ -46,6 +46,24 @@ body {
     background-color: #FFCCBC;
 }
 
+/* Styl dla przycisku "Account" */
+.account {
+    margin-right: 20px; /* Odsunięcie od lewej krawędzi */
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 8px 15px;
+    background-color: #FF5722;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.account:hover {
+    background-color: #FFCCBC;
+}
+
+
 /* Treść strony */
 .content {
     flex: 1;

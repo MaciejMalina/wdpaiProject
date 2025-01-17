@@ -1,0 +1,147 @@
+/* Ogólne stylowanie */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #001F3F;
+    color: white;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Nagłówek */
+.header {
+    background-color: #FF5722;
+    color: white;
+    width: 100%;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.header h1 {
+    margin: 0 auto;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.back-button {
+    background-color: white;
+    color: #FF5722;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-left: 20px;
+    transition: background-color 0.3s;
+}
+
+.back-button:hover {
+    background-color: #FFCCBC;
+}
+
+/* Treść strony */
+.content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Karta profilu */
+.profile-card {
+    background-color: white;
+    color: #001F3F;
+    padding: 20px;
+    border-radius: 10px;
+    width: 85%;
+    max-width: 500px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    text-align: left;
+}
+
+.profile-card h2 {
+    font-size: 1.2rem;
+    margin: 20px 0 15px;
+    color: #FF5722;
+    border-bottom: 2px solid #FF5722;
+    padding-bottom: 5px;
+}
+
+/* Wiersze profilu */
+.profile-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    font-size: 1rem;
+}
+
+.profile-row strong {
+    flex: 1;
+    font-weight: bold;
+}
+
+.profile-row span {
+    flex: 2;
+    text-align: left;
+}
+
+/* Przycisk edycji */
+.edit-button {
+    background-color: #001F3F;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-button:hover {
+    background-color: #004080;
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+    .profile-card {
+        width: 90%;
+    }
+
+    .header h1 {
+        font-size: 1.2rem;
+    }
+
+    .back-button {
+        font-size: 0.9rem;
+    }
+
+    .profile-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .profile-row strong, 
+    .profile-row span {
+        text-align: left;
+        margin-bottom: 5px;
+    }
+
+    .edit-button {
+        align-self: flex-end;
+    }
+}

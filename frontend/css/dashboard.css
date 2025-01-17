@@ -22,6 +22,23 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
+/* Styl dla przycisku "Account" */
+.account {
+    margin-right: 20px; /* Odsunięcie od lewej krawędzi */
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 8px 15px;
+    background-color: #FF5722;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.account:hover {
+    background-color: #FFCCBC;
+}
+
 .header h1 {
     padding: 10px;
     margin: 0;
