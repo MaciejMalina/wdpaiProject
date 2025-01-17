@@ -1,0 +1,208 @@
+/* Ogólne stylowanie */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Nagłówek */
+.header {
+    background-color: #FF5722;
+    color: white;
+    width: 100%;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+    margin: 0 auto;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.account {
+    font-size: 1rem;
+    text-align: right;
+}
+
+.back-button {
+    background-color: white;
+    color: #FF5722;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-right: auto;
+    transition: background-color 0.3s;
+}
+
+.back-button:hover {
+    background-color: #FFCCBC;
+}
+
+/* Treść */
+.content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.project-details {
+    background-color: white;
+    color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 800px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.project-details .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.project-details p {
+    margin: 0;
+    font-size: 1rem;
+    flex: 1;
+}
+
+/* Lista zadań */
+.task-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.task-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.task-list li label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+/* Stylizacja checkboxów */
+.task-list input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+/* Stylizacja notatek */
+.task-list textarea {
+    flex: 1;
+    resize: none;
+    height: 35px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 0.9rem;
+    color: #333;
+    background-color: #f5f5f5;
+    transition: border-color 0.3s;
+}
+
+.task-list textarea:focus {
+    outline: none;
+    border-color: #FF5722;
+}
+
+/* Stylizacja przycisków edycji */
+.edit-button {
+    background-color: #001F3F;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left: 10px;
+}
+
+.edit-button:hover {
+    background-color: #004080;
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+    .project-details {
+        width: 90%;
+    }
+
+    .header h1 {
+        font-size: 1.2rem;
+    }
+
+    .back-button, .edit-button {
+        font-size: 0.9rem;
+    }
+
+    .task-list li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .task-list textarea {
+        width: 100%;
+        margin-top: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .project-details {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .header h1 {
+        font-size: 1rem;
+    }
+
+    .back-button, .edit-button {
+        font-size: 0.8rem;
+        padding: 5px 10px;
+    }
+
+    .project-details p, 
+    .task-list span {
+        font-size: 0.9rem;
+    }
+
+    .task-list textarea {
+        height: 30px;
+    }
+}

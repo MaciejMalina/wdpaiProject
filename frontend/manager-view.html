@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Manager View</title>
+    <link rel="stylesheet" href="css/manager-view.css">
+</head>
+<body>
+    <div class="header">
+        <button onclick="history.back()" class="back-button">Back</button>
+        <h1>Project nr. 1</h1>
+        <div class="account">
+            <span>Account</span>
+        </div>
+    </div>
+    <div class="content">
+        <div class="project-details">
+            <div class="row">
+                <p><strong>informacje ogólne:</strong> Projekt zlecony przez studia polega na utworzeniu strony internetowej</p>
+                <button class="edit-button">Edit</button>
+            </div>
+            <div class="row">
+                <p><strong>zespół:</strong> Osoba 1, Osoba 2, Osoba 3 ...</p>
+                <button class="edit-button">Edit</button>
+            </div>
+            <div class="row">
+                <p><strong>spotkania:</strong> 15.01.2025 17:00, 22.01.2025 15:00, 29.01.2025 9:00</p>
+                <button class="edit-button">Edit</button>
+            </div>
+            <div class="row">
+                <p><strong>zadania:</strong></p>
+                <ul class="task-list">
+                    <li>
+                        <label>
+                            <span>Zaprojektować prototyp</span>
+                            <input type="checkbox">
+                            <textarea placeholder="Dodaj notatkę..."></textarea>
+                        </label>
+                        <button class="edit-button">Edit</button>
+                    </li>
+                    <li>
+                        <label>
+                            <span>Stworzyć frontend</span>
+                            <input type="checkbox">
+                            <textarea placeholder="Dodaj notatkę..."></textarea>
+                        </label>
+                        <button class="edit-button">Edit</button>
+                    </li>
+                    <li>
+                        <label>
+                            <span>Stworzyć backend</span>
+                            <input type="checkbox">
+                            <textarea placeholder="Dodaj notatkę..."></textarea>
+                        </label>
+                        <button class="edit-button">Edit</button>
+                    </li>
+                    <li>
+                        <label>
+                            <span>Podłączyć bazę danych</span>
+                            <input type="checkbox">
+                            <textarea placeholder="Dodaj notatkę..."></textarea>
+                        </label>
+                        <button class="edit-button">Edit</button>
+                    </li>
+                    <li>
+                        <label>
+                            <span>Poprawki końcowe</span>
+                            <input type="checkbox">
+                            <textarea placeholder="Dodaj notatkę..."></textarea>
+                        </label>
+                        <button class="edit-button">Edit</button>
+                    </li>
+                    <li>
+                        <label>
+                            <span>Przesłać całość na GitHuba</span>
+                            <input type="checkbox">
+                            <textarea placeholder="Dodaj notatkę..."></textarea>
+                        </label>
+                        <button class="edit-button">Edit</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
