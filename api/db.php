@@ -2,7 +2,7 @@
 class Database {
     private $host = "db";
     private $db_name = "teamit";
-    private $username = "root";
+    private $username = "postgres";
     private $password = "example";
     public $conn;
 
@@ -10,7 +10,7 @@ class Database {
         $this->conn = null;
         try {
             $this->conn = new PDO(
-                "mysql:host=" . $this->host . ";dbname=" . $this->db_name,
+                "pgsql:host=" . $this->host . ";dbname=" . $this->db_name,
                 $this->username,
                 $this->password
             );

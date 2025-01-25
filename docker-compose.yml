@@ -16,18 +16,21 @@ services:
       dockerfile: docker/php/Dockerfile
     volumes:
       - .:/app
+    links:
+      - db
 
   db:
-    image: mysql:8.0
-    container_name: teamit-mysql
+    image: postgres:15
+    container_name: teamit-postgres
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: example
-      MYSQL_DATABASE: teamit
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: teamit
     volumes:
-      - db-data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
     ports:
-      - "3306:3306"
+      - "5432:5432"
 
 volumes:
   db-data:
