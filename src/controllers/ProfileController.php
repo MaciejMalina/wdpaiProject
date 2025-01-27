@@ -11,7 +11,13 @@ class ProfileController extends AppController {
             exit();
         }
 
-        $user = getCurrentUser(); // Funkcja pobiera dane aktualnie zalogowanego użytkownika
-        $this->render('profile', ['user' => $user]);
+        $user = getCurrentUser(); // Pobiera dane użytkownika
+
+        if ($user === false) {
+            echo "User data not found.";
+            exit();
+        }
+
+        $this->render('profile', ['user' => $user]); // Przekazuje dane do widoku
     }
 }

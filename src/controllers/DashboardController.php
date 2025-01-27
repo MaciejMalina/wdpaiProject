@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/AppController.php';
+require_once __DIR__ . '/../api/projects.php';
 
 class DashboardController extends AppController {
     public function dashboard() {
@@ -11,6 +12,11 @@ class DashboardController extends AppController {
         }
 
         $user = $_SESSION['user'];
-        $this->render('dashboard', ['user' => $user]);
+        $projects = getProjects(); // Pobierz projekty
+
+        $this->render('dashboard', [
+            'user' => $user,
+            'projects' => $projects // Przekaż projekty do widoku
+        ]);
     }
 }

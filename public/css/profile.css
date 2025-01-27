@@ -5,7 +5,7 @@ body {
     font-family: Arial, sans-serif;
     background-color: #001F3F;
     color: white;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -16,32 +16,30 @@ body {
     background-color: #FF5722;
     color: white;
     width: 100%;
-    padding: 10px 20px;
+    padding: 10px 0px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: sticky;
-    top: 0;
-    z-index: 10;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .header h1 {
-    margin: 0 auto;
+    margin: 0;
     font-size: 1.5rem;
-    text-align: center;
+    text-align: center -10px;
 }
 
 .back-button {
     background-color: white;
     color: #FF5722;
     border: none;
-    border-radius: 5px;
+    border-radius: 7px;
     padding: 8px 15px;
     font-size: 1rem;
     cursor: pointer;
-    margin-left: 20px;
     transition: background-color 0.3s;
+    margin-right: auto; /* Wyrównanie przycisku "Back" do lewej */
 }
 
 .back-button:hover {
@@ -55,7 +53,6 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
-    padding: 20px;
     box-sizing: border-box;
 }
 
@@ -65,14 +62,14 @@ body {
     color: #001F3F;
     padding: 20px;
     border-radius: 10px;
-    width: 85%;
+    width: 90%;
     max-width: 500px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     text-align: left;
 }
 
 .profile-card h2 {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     margin: 20px 0 15px;
     color: #FF5722;
     border-bottom: 2px solid #FF5722;
@@ -93,11 +90,30 @@ body {
 .profile-row strong {
     flex: 1;
     font-weight: bold;
+    text-align: left;
 }
+
+.save-button {
+    background-color: #FF5722;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.save-button:hover {
+    background-color: #FF8A65;
+    transform: scale(1.05);
+}
+
 
 .profile-row span {
     flex: 2;
     text-align: left;
+    word-wrap: break-word; /* Zapobiega wychodzeniu długich tekstów */
 }
 
 /* Przycisk edycji */
@@ -109,17 +125,19 @@ body {
     padding: 8px 15px;
     font-size: 0.9rem;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .edit-button:hover {
     background-color: #004080;
+    transform: scale(1.05); /* Delikatny efekt powiększenia przy najechaniu */
 }
+
 
 /* Responsywność */
 @media (max-width: 768px) {
     .profile-card {
-        width: 90%;
+        width: 95%;
     }
 
     .header h1 {
@@ -135,13 +153,13 @@ body {
         align-items: flex-start;
     }
 
-    .profile-row strong, 
+    .profile-row strong,
     .profile-row span {
         text-align: left;
         margin-bottom: 5px;
     }
 
     .edit-button {
-        align-self: flex-end;
+        align-self: flex-start;
     }
 }
