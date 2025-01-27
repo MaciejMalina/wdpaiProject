@@ -11,6 +11,7 @@ services:
       - php
 
   php:
+    image: php:8.1-fpm
     build:
       context: .
       dockerfile: docker/php/Dockerfile

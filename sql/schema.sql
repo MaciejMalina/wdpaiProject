@@ -5,6 +5,10 @@ CREATE TABLE users (
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     role VARCHAR(20) DEFAULT 'user',
+    phone VARCHAR(20),
+    address VARCHAR(255),
+    position VARCHAR(50),
+    department VARCHAR(50),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

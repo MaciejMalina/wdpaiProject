@@ -16,43 +16,35 @@ body {
     background-color: #FF5722;
     color: white;
     width: 100%;
-    padding: 10px 0px;
+    padding: 10px 20px;
     display: flex;
     align-items: center;
+    justify-content: space-between; /* Rozciąga elementy na boki */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-/* Styl dla przycisku "Account" */
-.account {
-    margin-right: 20px; /* Odsunięcie od lewej krawędzi */
+.header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+/* Linki w nagłówku */
+.header a {
     text-decoration: none;
     color: white;
     font-size: 1rem;
-    cursor: pointer;
+    margin-left: 15px; /* Odstęp między linkami */
     padding: 8px 15px;
     background-color: #FF5722;
     border-radius: 5px;
     transition: background-color 0.3s;
 }
 
-.account:hover {
+.header a:hover {
     background-color: #FFCCBC;
 }
 
-.header h1 {
-    padding: 10px;
-    margin: 0;
-    font-size: 1.5rem;
-    flex: 1;
-}
-
-.account {
-    padding: 10px 20px;
-    text-align: right;
-    font-size: 1rem;
-}
-
-/* Dashboard */
+/* Stylowanie dashboard */
 .dashboard {
     display: flex;
     flex-wrap: wrap;
@@ -67,13 +59,13 @@ body {
 .project-card {
     background-color: white;
     color: #001F3F;
-    width: calc(33.333%-20px); /* Trzy karty w rzędzie, uwzględniając odstępy */
+    width: calc(33.333% - 20px); /* Trzy karty w rzędzie */
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
-    min-width: 300px; /* Minimalna szerokość karty */
+    min-width: 300px;
 }
 
 .project-card:hover {
@@ -103,30 +95,28 @@ body {
 
 /* Responsywność */
 @media (max-width: 768px) {
-    /* Układ dashboard dla tabletów i mniejszych ekranów */
     .project-card {
         width: calc(50% - 20px); /* Dwie karty w rzędzie na tabletach */
     }
 }
 
 @media (max-width: 480px) {
-    /* Układ dla bardzo małych urządzeń (smartfony) */
     .dashboard {
-        flex-direction: column; /* Karty układają się w jedną kolumnę */
+        flex-direction: column;
         align-items: center;
     }
 
     .project-card {
-        width: 70%; /* Karty zajmują prawie całą szerokość ekranu */
-        padding: 10px; /* Mniejsze marginesy wewnętrzne */
+        width: 70%;
+        padding: 10px;
     }
 
     .project-card h2 {
-        font-size: 1rem; /* Zmniejszenie rozmiaru tytułu projektu */
+        font-size: 1rem;
     }
 
     .project-card p, 
     .project-card li {
-        font-size: 0.8rem; /* Zmniejszenie rozmiaru tekstu */
+        font-size: 0.8rem;
     }
 }
