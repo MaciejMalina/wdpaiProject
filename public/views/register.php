@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <div class="logo-section">
-                <img src="logo2.png" alt="Teamit Logo" class="logo">
+                <img src="/public/img/logo2.png" alt="Teamit Logo" class="logo">
             </div>
             <div class="login-section">
                 <form method="POST">

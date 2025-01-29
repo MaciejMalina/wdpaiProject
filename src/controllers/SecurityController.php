@@ -12,7 +12,6 @@ class SecurityController extends AppController {
             $password = $_POST['password'];
             $confirmPassword = $_POST['confirm_password'];
 
-            // Sprawdzenie, czy hasła są takie same
             if ($password !== $confirmPassword) {
                 $error = "Passwords do not match!";
             } else {
@@ -23,12 +22,11 @@ class SecurityController extends AppController {
                 if ($stmt->fetch()) {
                     $error = "Email already in use!";
                 } else {
-                    // Zapisanie hasła w formie zwykłego tekstu (plaintext)
                     $stmt = $db->prepare('INSERT INTO users (name, email, password) VALUES (:name, :email, :password)');
                     $stmt->execute([
                         'name' => $name,
                         'email' => $email,
-                        'password' => $password // Hasło zapisane w formie tekstu
+                        'password' => $password
                     ]);
                     header('Location: /login');
                     exit();
@@ -53,7 +51,6 @@ class SecurityController extends AppController {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
             if ($user && $user['password'] === $password) {
-                // Logowanie pomyślne
                 $_SESSION['user'] = [
                     'id' => $user['id'],
                     'name' => $user['name'],

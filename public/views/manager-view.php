@@ -1,5 +1,4 @@
 <?php
-// manager-view.php
 require_once '../src/api/projects.php';
 $projectId = $_GET['id'] ?? null;
 $project = $projectId ? getProjectById($projectId) : null;

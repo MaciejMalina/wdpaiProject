@@ -1,4 +1,3 @@
-/* Ogólne stylowanie */
 body {
     margin: 0;
     padding: 0;
@@ -11,7 +10,6 @@ body {
     align-items: center;
 }
 
-/* Nagłówek */
 .header {
     background-color: #FF5722;
     color: white;
@@ -39,14 +37,13 @@ body {
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin-right: auto; /* Wyrównanie przycisku "Back" do lewej */
+    margin-right: auto;
 }
 
 .back-button:hover {
     background-color: #FFCCBC;
 }
 
-/* Treść strony */
 .content {
     flex: 1;
     display: flex;
@@ -56,7 +53,6 @@ body {
     box-sizing: border-box;
 }
 
-/* Karta profilu */
 .profile-card {
     background-color: white;
     color: #001F3F;
@@ -76,7 +72,6 @@ body {
     padding-bottom: 5px;
 }
 
-/* Wiersze profilu */
 .profile-row {
     display: flex;
     align-items: center;
@@ -113,10 +108,9 @@ body {
 .profile-row span {
     flex: 2;
     text-align: left;
-    word-wrap: break-word; /* Zapobiega wychodzeniu długich tekstów */
+    word-wrap: break-word;
 }
 
-/* Przycisk edycji */
 .edit-button {
     background-color: #001F3F;
     color: white;
@@ -130,11 +124,9 @@ body {
 
 .edit-button:hover {
     background-color: #004080;
-    transform: scale(1.05); /* Delikatny efekt powiększenia przy najechaniu */
+    transform: scale(1.05);
 }
 
-
-/* Responsywność */
 @media (max-width: 768px) {
     .profile-card {
         width: 95%;

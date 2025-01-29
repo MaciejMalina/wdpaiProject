@@ -21,7 +21,6 @@ function getCurrentUser() {
 function updateUserField($userId, $field, $value) {
     $db = new PDO('pgsql:host=db;dbname=teamit', 'postgres', 'example');
 
-    // Przygotowanie zapytania z dynamiczną nazwą kolumny
     $stmt = $db->prepare("UPDATE users SET $field = :value WHERE id = :id");
     $stmt->execute([
         'value' => $value,

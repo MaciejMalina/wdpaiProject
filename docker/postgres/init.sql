@@ -1,4 +1,38 @@
--- Przykładowi użytkownicy
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(20) DEFAULT 'user',
+    phone VARCHAR(20),
+    address VARCHAR(255),
+    position VARCHAR(50),
+    department VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE projects (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    manager_id INT NOT NULL,
+    status VARCHAR(20) DEFAULT 'Pending',
+    team TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    description VARCHAR(255),
+    FOREIGN KEY (manager_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE tasks (
+    id SERIAL PRIMARY KEY,
+    project_id INT NOT NULL,
+    description TEXT NOT NULL,
+    assigned_to INT,
+    status VARCHAR(20) DEFAULT 'Pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
+    FOREIGN KEY (assigned_to) REFERENCES users(id) ON DELETE SET NULL
+);
+
 INSERT INTO users (name, email, password, role, phone, address, position, department) VALUES
 ('Maciej Malina', 'maciej.malina@gmail.com', '$password1', 'admin', '+48 996 202 101', 'Krakow, Poland', 'CEO', 'CEO'),
 ('John Smith', 'john.smith@example.com', 'password123', 'manager', '+48 600 700 800', 'Warsaw, Poland', 'Project Manager', 'IT'),
@@ -9,15 +43,14 @@ INSERT INTO users (name, email, password, role, phone, address, position, depart
 ('James White', 'james.white@example.com', 'password123', 'analyst', '+48 600 999 000', 'Lodz, Poland', 'Business Analyst', 'Business'),
 ('Sophia Black', 'sophia.black@example.com', 'password123', 'designer', '+48 601 222 333', 'Katowice, Poland', 'UI/UX Designer', 'Design');
 
--- Przykładowe projekty
-INSERT INTO projects (name, manager_id, status, team) VALUES
-('Project Alpha', 1, 'Active', 'Emily Johnson, Michael Brown, Olivia Green'),
-('Project Beta', 2, 'Completed', 'Sophia Black, James White'),
-('Project Gamma', 1, 'Pending', 'Michael Brown, Olivia Green'),
-('Project Delta', 2, 'Active', 'Emily Johnson, James White'),
-('Project Omega', 1, 'On Hold', 'Sophia Black, Emily Johnson, Michael Brown');
+INSERT INTO projects (name, manager_id, status, team, description) VALUES
+('Project Alpha', 1, 'Active', 'Emily Johnson, Michael Brown, Olivia Green', 'Developing a new web platform for client X.'),
+('Project Beta', 2, 'Completed', 'Sophia Black, James White', 'Completed the redesign of the company`s intranet.'),
+('Project Gamma', 1, 'Pending', 'Michael Brown, Olivia Green', 'Planning phase for a mobile app for internal use.'),
+('Project Delta', 2, 'Active', 'Emily Johnson, James White', 'Ongoing updates to the CRM system.'),
+('Project Omega', 1, 'On Hold', 'Sophia Black, Emily Johnson, Michael Brown', 'Paused development of the e-commerce platform due to budget constraints.');
 
--- Przykładowe zadania
+
 INSERT INTO tasks (project_id, description, assigned_to, status) VALUES
 (1, 'Develop frontend interface for login page', 3, 'In Progress'),
 (1, 'Build backend API for authentication', 4, 'Pending'),

@@ -17,11 +17,11 @@
             <p>No projects available.</p>
         <?php else: ?>
             <?php foreach ($projects as $project): ?>
-                <div class="project-card" onclick="location.href='/project.php?id=<?= $project['id'] ?>';">
+                <div class="project-card" onclick="location.href='/project?id=<?= $project['id'] ?>';">
                     <h2><?= htmlspecialchars($project['name']) ?></h2>
-                    <p><strong>Manager:</strong> <?= htmlspecialchars($project['manager'] ?? 'Unknown') ?></p>
-                    <p><strong>Status:</strong> <?= htmlspecialchars($project['status'] ?? 'Unknown') ?></p>
-                    <p><strong>Team:</strong></p>
+                    <p><strong>Manager:</strong> <?= htmlspecialchars($project['manager']) ?></p>
+                    <p><strong>Status:</strong> <?= htmlspecialchars($project['status']) ?></p>
+                    <p><strong>Team:</strong> <?= htmlspecialchars($project['team']) ?></p>
                     <ul>
                         <li>Developers: <?= htmlspecialchars($project['developers'] ?? 'None') ?></li>
                         <li>Testers: <?= htmlspecialchars($project['testers'] ?? 'None') ?></li>

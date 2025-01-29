@@ -11,13 +11,13 @@ class ProfileController extends AppController {
             exit();
         }
 
-        $user = getCurrentUser(); // Pobiera dane użytkownika
+        $user = getCurrentUser();
 
         if ($user === false) {
             echo "User data not found.";
             exit();
         }
 
-        $this->render('profile', ['user' => $user]); // Przekazuje dane do widoku
+        $this->render('profile', ['user' => $user]);
     }
 }

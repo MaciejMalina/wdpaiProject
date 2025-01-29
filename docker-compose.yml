@@ -9,6 +9,7 @@ services:
       - .:/app
     links:
       - php
+      - postgres
 
   php:
     image: php:8.1-fpm
@@ -17,21 +18,24 @@ services:
       dockerfile: docker/php/Dockerfile
     volumes:
       - .:/app
-    links:
-      - db
 
-  db:
-    image: postgres:15
-    container_name: teamit-postgres
+  postgres:
+    image: postgres:latest
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: example
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
       POSTGRES_DB: teamit
     volumes:
-      - ./sql:/docker-entrypoint-initdb.d
-    ports:
-      - "5432:5432"
+      -  ./Docker/postgres/:/docker-entrypoint-initdb.d/
 
-volumes:
-  db-data:
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "support@teamit.com"
+      PGADMIN_DEFAULT_PASSWORD: "password"
+    depends_on:
+      - postgres

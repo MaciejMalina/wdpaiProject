@@ -3,19 +3,16 @@
 require_once 'src/controllers/SecurityController.php';
 require_once 'src/controllers/DashboardController.php';
 require_once 'src/controllers/ProfileController.php';
-
+require_once 'src/controllers/ProjectController.php';
 class Routing {
     public static function run($url) {
         $action = explode("/", $url)[0];
         $controller = null;
-        // Obsługa domyślnej trasy "/"
         if ($action === '' || $action === 'index') {
             session_start();
             if (isset($_SESSION['user'])) {
-                // Jeśli użytkownik jest zalogowany, przekieruj na dashboard
                 header('Location: /dashboard');
             } else {
-                // Jeśli nie jest zalogowany, przekieruj na login
                 header('Location: /login');
             }
             exit();
@@ -30,7 +27,7 @@ class Routing {
         }
         elseif ($action === 'register') {
             $controller = new SecurityController();
-            $controller->register(); // Dodaj metodę do obsługi rejestracji
+            $controller->register();
         }
         elseif ($action === 'dashboard') {
             $controller = new DashboardController();
@@ -39,6 +36,21 @@ class Routing {
         elseif ($action === 'profile') {
             $controller = new ProfileController();
             $controller->profile();
+        }
+        elseif ($action === 'project') {
+            $controller = new ProjectController();
+            $controller->project();
+            return;
+        }
+        elseif ($action === 'update-task-status') {
+            $controller = new ProjectController();
+            $controller->updateTaskStatus();
+            return;
+        }
+        elseif ($action === 'update-project') {
+            $controller = new ProjectController();
+            $controller->updateProject();
+            return;
         }
         else {
             http_response_code(404);

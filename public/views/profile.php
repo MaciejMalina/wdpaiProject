@@ -7,22 +7,15 @@
     <link rel="stylesheet" href="/css/profile.css">
     <script>
         function enableEdit(fieldId, valueId, inputId, saveButtonId) {
-            // Ukryj pole z aktualną wartością
             document.getElementById(valueId).style.display = "none";
-            
-            // Pokaż pole input
             document.getElementById(inputId).style.display = "inline-block";
             document.getElementById(inputId).focus();
-
-            // Pokaż przycisk "Save"
             document.getElementById(saveButtonId).style.display = "inline-block";
         }
 
         function submitEdit(fieldId, valueId, inputId, saveButtonId) {
-            // Pobierz nową wartość z pola input
             const newValue = document.getElementById(inputId).value;
 
-            // Wyślij zmiany do serwera (AJAX lub pełne przesłanie formularza)
             document.getElementById("field").value = fieldId;
             document.getElementById("value").value = newValue;
             document.getElementById("editForm").submit();
@@ -37,7 +30,7 @@
 </head>
 <body>
     <div class="header">
-        <button onclick="history.back()" class="back-button">Back</button>
+        <button class="back-button" onclick="location.href='/dashboard'">Back</button>
         <h1>Your Profile</h1>
     </div>
     <div class="content">

@@ -10,13 +10,16 @@ class DashboardController extends AppController {
             header('Location: /login');
             exit();
         }
-
+    
         $user = $_SESSION['user'];
-        $projects = getProjects(); // Pobierz projekty
+        require_once __DIR__ . '/../api/projects.php';
 
+        $projects = getProjects($user['id'], $user['role']);
+    
         $this->render('dashboard', [
             'user' => $user,
-            'projects' => $projects // Przekaż projekty do widoku
+            'projects' => $projects
         ]);
     }
+    
 }

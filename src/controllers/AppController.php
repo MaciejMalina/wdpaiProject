@@ -18,12 +18,11 @@ class AppController {
     }
 
     protected function render(string $template = null, array $variables = []) {
-        // Ustalanie absolutnej ścieżki do widoków
         $templatePath = __DIR__ . '/../../public/views/' . $template . '.php';
         $output = 'File not found';
     
         if (file_exists($templatePath)) {
-            extract($variables); // Udostępnienie zmiennych widokowi
+            extract($variables);
             ob_start();
             include $templatePath;
             $output = ob_get_clean();
