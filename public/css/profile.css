@@ -29,47 +29,6 @@ body {
     flex-grow: 1;
 }
 
-.header a {
-    text-decoration: none;
-    color: white;
-    font-size: 1rem;
-    padding: 6px 15px;
-    background-color: transparent;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-.account {
-    margin-right: 20px;
-    text-decoration: none;
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-    padding: 8px 15px;
-    background-color: #FF5722;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
-
-.account:hover {
-    background-color: #FFCCBC;
-}
-.back-button {
-    background-color: white;
-    color: #FF5722;
-    border: none;
-    border-radius: 7px;
-    padding: 6px 15px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-right: auto;
-    margin-left: 10px;
-}
-
-.back-button:hover {
-    background-color: #FFCCBC;
-}
-
 .content {
     flex: 1;
     display: flex;
@@ -100,62 +59,58 @@ body {
 
 .profile-row {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    margin-bottom: 15px;
+    align-items: center;
     padding: 10px 0;
     border-bottom: 1px solid #ddd;
+}
+
+.profile-card input[type="text"],
+.profile-card input[type="email"],
+.profile-card input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin-left: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     font-size: 1rem;
+    background-color: white;
+    color: #001F3F;
 }
 
-.profile-row strong {
-    flex: 1;
-    font-weight: bold;
-    text-align: left;
-}
-
-/* Odsunięcie przycisków Edit i Save */
-.button-group {
+.button-group-container {
     display: flex;
-    gap: 10px; /* Odstęp między przyciskami */
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
 }
 
-.edit-button, .save-button {
-    padding: 6px 12px;
+.edit-button {
+    background-color: #FF5722;
+    color: white;
+    padding: 2px 6px;
     font-size: 0.9rem;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
-
-.edit-button {
-    margin-left: 10px;
-    padding: 5px 10px;
+.save-button {
     background-color: #FF5722;
     color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+    text-align: center;
 }
 
-.save-button {
-    background-color: #FF5722;
-    color: white;
-}
-
-.edit-button:hover, .save-button:hover {
+.save-button:hover {
     opacity: 0.8;
 }
 
-
-
-.profile-row span {
-    flex: 2;
-    text-align: left;
-    word-wrap: break-word;
-}
 
 @media (max-width: 768px) {
     .profile-card {
