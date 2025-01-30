@@ -1,3 +1,7 @@
+<?php
+$isUser = isset($_SESSION['user_id']);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,25 +10,18 @@
     <title>Your Profile</title>
     <link rel="stylesheet" href="/css/profile.css">
     <script>
-        function enableEdit(fieldId, valueId, inputId, saveButtonId) {
-            document.getElementById(valueId).style.display = "none";
-            document.getElementById(inputId).style.display = "inline-block";
-            document.getElementById(inputId).focus();
-            document.getElementById(saveButtonId).style.display = "inline-block";
-        }
+        function toggleEdit(field) {
+            const valueSpan = document.getElementById(`user-${field}`);
+            const inputField = document.getElementById(`${field}-input`);
 
-        function submitEdit(fieldId, valueId, inputId, saveButtonId) {
-            const newValue = document.getElementById(inputId).value;
-
-            document.getElementById("field").value = fieldId;
-            document.getElementById("value").value = newValue;
-            document.getElementById("editForm").submit();
-
-            // Opcjonalnie: Aktualizacja lokalna bez reloadu (odkomentuj, jeśli korzystasz z AJAX)
-            // document.getElementById(valueId).innerText = newValue;
-            // document.getElementById(valueId).style.display = "inline-block";
-            // document.getElementById(inputId).style.display = "none";
-            // document.getElementById(saveButtonId).style.display = "none";
+            if (valueSpan.style.display === "none") {
+                valueSpan.style.display = "inline";
+                inputField.style.display = "none";
+            } else {
+                valueSpan.style.display = "none";
+                inputField.style.display = "inline";
+                inputField.focus();
+            }
         }
     </script>
 </head>
@@ -32,11 +29,75 @@
     <div class="header">
         <button class="back-button" onclick="location.href='/dashboard'">Back</button>
         <h1>Your Profile</h1>
+        <div class="nav-links">
+            <a href="/logout" class="account">Logout</a>
+        </div>
     </div>
     <div class="content">
         <div class="profile-card">
             <h2>Personal Information</h2>
-            <form id="editForm" method="POST" action="/profile">
+            
+            <form id="editForm" method="POST" action="/updateProfile">
+                <p>
+                    <strong>Name:</strong>
+                    <span id="user-name"><?= htmlspecialchars($user['name'] ?? '') ?></span>
+                    <button type="button" onclick="toggleEdit('name')" class="edit-button">Edit</button>
+                    <input id="name-input" type="text" name="name" value="<?= htmlspecialchars($user['name'] ?? '') ?>" style="display: none;">
+                </p>
+
+                <p>
+                    <strong>Email:</strong>
+                    <span id="user-email"><?= htmlspecialchars($user['email'] ?? '') ?></span>
+                    <button type="button" onclick="toggleEdit('email')" class="edit-button">Edit</button>
+                    <input id="email-input" type="email" name="email" value="<?= htmlspecialchars($user['email'] ?? '') ?>" style="display: none;">
+                </p>
+
+                <p>
+                    <strong>Phone:</strong>
+                    <span id="user-phone"><?= htmlspecialchars($user['phone'] ?? '') ?></span>
+                    <button type="button" onclick="toggleEdit('phone')" class="edit-button">Edit</button>
+                    <input id="phone-input" type="text" name="phone" value="<?= htmlspecialchars($user['phone'] ?? '') ?>" style="display: none;">
+                </p>
+
+                <p>
+                    <strong>Address:</strong>
+                    <span id="user-address"><?= htmlspecialchars($user['address'] ?? '') ?></span>
+                    <button type="button" onclick="toggleEdit('address')" class="edit-button">Edit</button>
+                    <input id="address-input" type="text" name="address" value="<?= htmlspecialchars($user['address'] ?? '') ?>" style="display: none;">
+                </p>
+
+                <p>
+                    <strong>Position:</strong>
+                    <span id="user-position"><?= htmlspecialchars($user['position'] ?? '') ?></span>
+                    <button type="button" onclick="toggleEdit('position')" class="edit-button">Edit</button>
+                    <input id="position-input" type="text" name="position" value="<?= htmlspecialchars($user['position'] ?? '') ?>" style="display: none;">
+                </p>
+
+                <p>
+                    <strong>Department:</strong>
+                    <span id="user-department"><?= htmlspecialchars($user['department'] ?? '') ?></span>
+                    <button type="button" onclick="toggleEdit('department')" class="edit-button">Edit</button>
+                    <input id="department-input" type="text" name="department" value="<?= htmlspecialchars($user['department'] ?? '') ?>" style="display: none;">
+                </p>
+
+                <p>
+                    <strong>Password:</strong>
+                    <span id="user-password">********</span> <!-- Nie pokazujemy hasła -->
+                    <button type="button" onclick="toggleEdit('password')" class="edit-button">Edit</button>
+                    <input id="password-input" type="password" name="password" value="" style="display: none;">
+                </p>
+
+                <button type="submit" class="save-button">Save Changes</button>
+            </form>
+
+        </div>
+    </div>
+</body>
+</html>
+
+
+<!--
+<form id="editForm" method="POST" action="/profile">
                 <input type="hidden" name="field" id="field">
                 <input type="hidden" name="value" id="value">
                 <div class="profile-row">
@@ -91,7 +152,3 @@
                     <button type="button" id="passwordSave" class="edit-button" style="display: none;" onclick="submitEdit('password', 'passwordValue', 'passwordInput', 'passwordSave')">Save</button>
                 </div>
             </form>
-        </div>
-    </div>
-</body>
-</html>

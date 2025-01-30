@@ -1,60 +1,41 @@
 <?php
 
-require_once 'src/controllers/SecurityController.php';
-require_once 'src/controllers/DashboardController.php';
+require_once 'src/controllers/AppController.php';
 require_once 'src/controllers/ProfileController.php';
+require_once 'src/controllers/DashboardController.php';
 require_once 'src/controllers/ProjectController.php';
-class Routing {
-    public static function run($url) {
-        $action = explode("/", $url)[0];
-        $controller = null;
-        if ($action === '' || $action === 'index') {
-            session_start();
-            if (isset($_SESSION['user'])) {
-                header('Location: /dashboard');
-            } else {
-                header('Location: /login');
-            }
-            exit();
+require_once 'src/controllers/SecurityController.php';
+
+class Router
+{
+    public static $routes;
+
+    public static function get($url, $view)
+    {
+        self::$routes[$url] = $view;
+    }
+
+    public static function post($url, $view)
+    {
+        self::$routes[$url] = $view;
+    }
+
+    public static function run($url)
+    {
+
+        $urlParts = explode("/", $url);
+        $action = $urlParts[0];
+
+        if (!array_key_exists($action, self::$routes)) {
+            die("Wrong url!");
         }
-        if ($action === 'login') {
-            $controller = new SecurityController();
-            $controller->login();
-        }
-        elseif ($action === 'logout') {
-            $controller = new SecurityController();
-            $controller->logout();
-        }
-        elseif ($action === 'register') {
-            $controller = new SecurityController();
-            $controller->register();
-        }
-        elseif ($action === 'dashboard') {
-            $controller = new DashboardController();
-            $controller->dashboard();
-        }
-        elseif ($action === 'profile') {
-            $controller = new ProfileController();
-            $controller->profile();
-        }
-        elseif ($action === 'project') {
-            $controller = new ProjectController();
-            $controller->project();
-            return;
-        }
-        elseif ($action === 'update-task-status') {
-            $controller = new ProjectController();
-            $controller->updateTaskStatus();
-            return;
-        }
-        elseif ($action === 'update-project') {
-            $controller = new ProjectController();
-            $controller->updateProject();
-            return;
-        }
-        else {
-            http_response_code(404);
-            echo "404 Not Found";
-        }
+
+        $controller = self::$routes[$action];
+        $object = new $controller;
+        $action = $action ?: 'login';
+
+        $id = $urlParts[1] ?? '';
+
+        $object->$action($id);
     }
 }

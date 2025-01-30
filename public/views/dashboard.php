@@ -9,8 +9,10 @@
 <body>
     <div class="header">
         <h1>Your Projects</h1>
-        <a href="/profile" class="account">Account</a>
-        <a href="/logout" class="account">Logout</a>
+        <div class="nav-links">
+            <a href="/profile" class="account">Account</a>
+            <a href="/logout" class="account">Logout</a>
+        </div>
     </div>
     <div class="dashboard">
         <?php if (empty($projects)): ?>

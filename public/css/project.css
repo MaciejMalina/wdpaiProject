@@ -17,11 +17,17 @@ body {
     padding: 10px 0px;
     display: flex;
     align-items: center;
+    justify-content: center;
     justify-content: space-between;
     position: sticky;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
-
+.header .nav-links {
+    display: flex;
+    gap: 15px;
+    position: absolute;
+    right: 20px;
+}
 .header h1 {
     margin: 0 auto;
     font-size: 1.5rem;
@@ -136,22 +142,6 @@ body {
 .project-details textarea:focus {
     outline: none;
     border-color: #FF5722;
-}
-
-.edit-button {
-    background-color: #001F3F;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 15px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-.edit-button:hover {
-    background-color: #004080;
-    transform: scale(1.05);
 }
 
 .project-details {

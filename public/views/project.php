@@ -78,7 +78,10 @@
     <div class="header">
         <button class="back-button" onclick="location.href='/dashboard'">Back</button>
         <h1><?= htmlspecialchars($project['name'] ?? 'Unknown Project') ?></h1>
-        <a href="/profile" class="account">Account</a>
+        <div class="nav-links">
+            <a href="/profile" class="account">Account</a>
+            <a href="/logout" class="account">Logout</a>
+        </div>
     </div>
     <div class="content">
     <div class="project-details">
@@ -97,7 +100,7 @@
                 <input type="hidden" name="project_id" value="<?= $project['id'] ?>">
                 <input type="hidden" name="field" value="name">
                 <input id="project-name-input" type="text" name="value" value="<?= htmlspecialchars($project['name']) ?>" style="display: none;">
-                <button type="submit">Save</button>
+                <button class="edit-button">Save</button>
             </form>
         <?php else: ?>
             <?= htmlspecialchars($project['name']) ?>
@@ -113,7 +116,7 @@
                 <input type="hidden" name="project_id" value="<?= $project['id'] ?>">
                 <input type="hidden" name="field" value="description">
                 <textarea id="project-description-input" name="value" style="display: none;"><?= htmlspecialchars($project['description']) ?></textarea>
-                <button type="submit">Save</button>
+                <button class="edit-button">Save</button>
             </form>
         <?php else: ?>
             <?= htmlspecialchars($project['description']) ?>
@@ -129,7 +132,7 @@
                 <input type="hidden" name="project_id" value="<?= $project['id'] ?>">
                 <input type="hidden" name="field" value="team">
                 <textarea id="project-team-input" name="value" style="display: none;"><?= htmlspecialchars($project['team']) ?></textarea>
-                <button type="submit">Save</button>
+                <button class="edit-button">Save</button>
             </form>
         <?php else: ?>
             <?= htmlspecialchars($project['team']) ?>
