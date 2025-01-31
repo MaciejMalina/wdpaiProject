@@ -7,32 +7,36 @@
     <link rel="stylesheet" href="/css/dashboard.css">
 </head>
 <body>
+
+<header>
     <div class="header">
         <h1>Your Projects</h1>
-        <div class="nav-links">
+        <nav>
+            <a href="/addProject" class="add-project-button">+ Add Project</a>
             <a href="/profile" class="account">Account</a>
-            <a href="/logout" class="account">Logout</a>
-        </div>
+            <a href="/logout" class="logout">Logout</a>
+        </nav>
     </div>
-    <div class="dashboard">
-        <?php if (empty($projects)): ?>
-            <p>No projects available.</p>
-        <?php else: ?>
-            <?php foreach ($projects as $project): ?>
-                <div class="project-card" onclick="location.href='/project?id=<?= $project['id'] ?>';">
-                    <h2><?= htmlspecialchars($project['name']) ?></h2>
-                    <p><strong>Manager:</strong> <?= htmlspecialchars($project['manager']) ?></p>
-                    <p><strong>Status:</strong> <?= htmlspecialchars($project['status']) ?></p>
-                    <p><strong>Team:</strong> <?= htmlspecialchars($project['team']) ?></p>
-                    <ul>
-                        <li>Developers: <?= htmlspecialchars($project['developers'] ?? 'None') ?></li>
-                        <li>Testers: <?= htmlspecialchars($project['testers'] ?? 'None') ?></li>
-                        <li>Business analysts: <?= htmlspecialchars($project['analysts'] ?? 'None') ?></li>
-                        <li>Designers: <?= htmlspecialchars($project['designers'] ?? 'None') ?></li>
-                    </ul>
-                </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
+</header>
+
+<main>
+    <div class="dashboard-container">
+        <?php foreach ($projects as $project): ?>
+        <a href="/project?id=<?= $project['id'] ?>" class="project-card">
+            <h2><?= htmlspecialchars($project['name']) ?></h2>
+            <p><?= htmlspecialchars($project['description']) ?></p>
+            <p><strong>Manager:</strong> <?= htmlspecialchars($project['manager_name']) ?></p>
+            <p><strong>Status:</strong> <?= htmlspecialchars($project['status']) ?></p>
+            <p><strong>Team:</strong></p>
+            <ul>
+                <li><strong>Developers:</strong> <?= !empty($project['team_roles']['developers']) ? implode(", ", $project['team_roles']['developers']) : 'None' ?></li>
+                <li><strong>Testers:</strong> <?= !empty($project['team_roles']['testers']) ? implode(", ", $project['team_roles']['testers']) : 'None' ?></li>
+                <li><strong>Business Analysts:</strong> <?= !empty($project['team_roles']['analysts']) ? implode(", ", $project['team_roles']['analysts']) : 'None' ?></li>
+                <li><strong>Designers:</strong> <?= !empty($project['team_roles']['designers']) ? implode(", ", $project['team_roles']['designers']) : 'None' ?></li>
+            </ul>
+        </a>
+    <?php endforeach; ?>
     </div>
+</main>
 </body>
 </html>

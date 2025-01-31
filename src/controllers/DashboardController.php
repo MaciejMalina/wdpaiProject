@@ -1,10 +1,20 @@
 <?php
-
-require_once __DIR__ . '/AppController.php';
-require_once __DIR__ . '/../api/projects.php';
-require_once __DIR__ . '/../api/users.php';
+require_once 'AppController.php';
+require_once __DIR__ . '/../repository/ProjectRepository.php';
+require_once __DIR__ . '/../repository/TeamRepository.php';
+require_once __DIR__ . '/ProfileController.php';
 
 class DashboardController extends AppController {
+    private $projectRepository;
+    private $teamRepository;
+    private $profileController;
+
+    public function __construct() {
+        $this->projectRepository = new ProjectRepository();
+        $this->teamRepository = new TeamRepository();
+        $this->profileController = new ProfileController();
+    }
+
     public function dashboard() {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
@@ -15,22 +25,23 @@ class DashboardController extends AppController {
             exit();
         }
 
-        $user = getUserById($_SESSION['user_id']);
+        $userId = $_SESSION['user_id'];
+        $user = $this->profileController->getUserById($userId);
+        $role = $user['role'];
 
-        if (!$user) {
-            session_destroy();
-            header('Location: /login');
-            exit();
+        if ($role === 'admin') {
+            $projects = $this->projectRepository->getAllProjects();
+        } elseif ($role === 'manager') {
+            $projects = $this->projectRepository->getProjectsByManager($userId);
+        } else {
+            $projects = $this->projectRepository->getProjectsByAssignedTasks($userId);
         }
 
-        $_SESSION['user'] = $user;
+        foreach ($projects as &$project) {
+            $project['manager_name'] = $this->projectRepository->getManagerName($project['manager_id']);
+            $project['team_roles'] = $this->teamRepository->getTeamRoles($project['team']);
+        }
 
-        require_once __DIR__ . '/../api/projects.php';
-        $projects = getProjects($user['id'], $user['role']);
-
-        $this->render('dashboard', [
-            'user' => $user,
-            'projects' => $projects
-        ]);
+        $this->render('dashboard', ['projects' => $projects, 'user' => $user]);
     }
 }

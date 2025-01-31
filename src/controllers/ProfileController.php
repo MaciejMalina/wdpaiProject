@@ -16,7 +16,7 @@ class ProfileController extends AppController {
         }
 
         $userId = $_SESSION['user_id'];
-        $stmt = $db->prepare("SELECT id, name, email, role, phone, address, position, department FROM users WHERE id = :id");
+        $stmt = $db->prepare("SELECT id, name, email, password, role, phone, address, position, department FROM users WHERE id = :id");
         $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -97,4 +97,13 @@ class ProfileController extends AppController {
             ]]);
         }
     }
+    public function getUserById($id) {
+        $database = new Database();
+        $db = $database->connect();
+        $stmt = $db->prepare("SELECT * FROM users WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    
 }

@@ -5,8 +5,20 @@ require_once __DIR__ . '/../api/projects.php';
 require_once __DIR__ . '/../api/tasks.php';
 
 class ProjectController extends AppController {
+    private $projectRepository;
+    private $teamRepository;
+    private $profileController;
+
+    public function __construct() {
+        $this->projectRepository = new ProjectRepository();
+        $this->teamRepository = new TeamRepository();
+        $this->profileController = new ProfileController();
+    }
+
     public function project() {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         if (!isset($_SESSION['user'])) {
             header('Location: /login');
             exit();
@@ -35,52 +47,41 @@ class ProjectController extends AppController {
             'tasks' => $tasks
         ]);
     }
-    public function updateTaskStatus() {
-        session_start();
-        if (!isset($_SESSION['user'])) {
+    public function addProject() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!isset($_SESSION['user_id'])) {
             header('Location: /login');
             exit();
         }
-    
+
+        $userId = $_SESSION['user_id'];
+        $managers = $this->projectRepository->getManagersAndAdmins();
+        $users = $this->teamRepository->getAllUsers();
+
+        $this->render('addProject',['users' => $users, 'managers' => $managers]);
+    }
+    public function createProject() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $taskId = $_POST['task_id'] ?? null;
-            $status = $_POST['status'] ?? null;
-    
-            if ($taskId && $status) {
-                updateTaskStatus($taskId, $status);
+            $name = $_POST['name'] ?? null;
+            $description = $_POST['description'] ?? null;
+            $manager_id = $_POST['manager_id'] ?? null;
+            $status = $_POST['status'] ?? 'Pending';
+            $team_members = $_POST['team_members'] ?? [];
+
+            if ($name && $manager_id) {
+                $this->projectRepository->insertProject($name, $description, $manager_id, $status, $team_members);
+                header('Location: /dashboard');
+                exit();
             }
         }
     
-        $projectId = $_POST['project_id'] ?? null;
-    
-        if ($projectId) {
-            header("Location: /project?id=$projectId");
-            exit();
-        }
-    
-        header('Location: /dashboard');
-        exit();
+        $this->render('addProject', ['error' => 'All fields are required.']);
     }
-    
-    public function updateProject() {
-        session_start();
-        if (!isset($_SESSION['user'])) {
-            header('Location: /login');
-            exit();
-        }
-    
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $projectId = $_POST['project_id'] ?? null;
-            $field = $_POST['field'] ?? null;
-            $value = $_POST['value'] ?? null;
-    
-            if ($projectId && $field && $value) {
-                updateProjectField($projectId, $field, $value);
-            }
-        }
-    
-        header('Location: /project?id=' . ($_POST['project_id'] ?? ''));
-        exit();
-    }
-    
 }

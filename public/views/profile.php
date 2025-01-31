@@ -104,8 +104,6 @@ $isUser = isset($_SESSION['user_id']);
                         <button type="button" onclick="toggleEdit('role')" class="edit-button">Edit</button>
                     </div>
                 </p>
-
-
                 <button type="submit" class="save-button">Save Changes</button>
             </form>
 

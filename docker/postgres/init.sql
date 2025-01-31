@@ -16,7 +16,7 @@ CREATE TABLE projects (
     name VARCHAR(255) NOT NULL,
     manager_id INT NOT NULL,
     status VARCHAR(20) DEFAULT 'Pending',
-    team TEXT NOT NULL,
+    team TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     description VARCHAR(255),
     FOREIGN KEY (manager_id) REFERENCES users(id) ON DELETE CASCADE
