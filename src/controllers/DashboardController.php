@@ -39,7 +39,7 @@ class DashboardController extends AppController {
 
         foreach ($projects as &$project) {
             $project['manager_name'] = $this->projectRepository->getManagerName($project['manager_id']);
-            $project['team_roles'] = $this->teamRepository->getTeamRoles($project['team']);
+            $project['team_roles'] = $this->teamRepository->getTeamMembersByProject($project['id']);
         }
 
         $this->render('dashboard', ['projects' => $projects, 'user' => $user]);

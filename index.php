@@ -11,6 +11,7 @@ Router::get('logout', 'SecurityController');
 Router::get('dashboard', 'DashboardController');
 Router::get('profile', 'ProfileController');
 Router::get('project', 'ProjectController');
+Router::get('project/{id}', 'ProjectController');
 Router::get('addProject', 'ProjectController');
 
 

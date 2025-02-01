@@ -1,51 +1,103 @@
 <?php
 
-require_once __DIR__ . '/AppController.php';
-require_once __DIR__ . '/../api/projects.php';
-require_once __DIR__ . '/../api/tasks.php';
+require_once 'AppController.php';
+require_once __DIR__ . '/../repository/ProjectRepository.php';
+require_once __DIR__ . '/../repository/TaskRepository.php';
+require_once __DIR__ . '/../repository/TeamRepository.php';
+require_once __DIR__ . '/ProfileController.php';
 
 class ProjectController extends AppController {
     private $projectRepository;
+    private $taskRepository;
     private $teamRepository;
     private $profileController;
 
     public function __construct() {
         $this->projectRepository = new ProjectRepository();
+        $this->taskRepository = new TaskRepository();
         $this->teamRepository = new TeamRepository();
         $this->profileController = new ProfileController();
     }
-
-    public function project() {
+    public function project($id) {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        if (!isset($_SESSION['user'])) {
+
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /login');
+            exit();
+        }
+        $project = $this->projectRepository->getProjectById($id);
+        if (!$project) {
+            echo "Project not found!";
+            exit();
+        }
+
+        $teamRoles = $this->teamRepository->getTeamMembersByProject($id);
+        $tasks = $this->projectRepository->getTasksByProject($id);
+
+        $this->render('project', [
+            'project' => $project,
+            'teamRoles' => $teamRoles,
+            'tasks' => $tasks
+        ]);
+    }
+
+    public function updateProject() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!isset($_SESSION['user_id'])) {
             header('Location: /login');
             exit();
         }
 
-        $projectId = $_GET['id'] ?? null;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $projectId = $_POST['project_id'];
+            $field = $_POST['field'];
+            $value = trim($_POST['value']);
 
-        if (!$projectId) {
-            echo "No project ID provided.";
-            http_response_code(404);
+            $allowedFields = ['name', 'status', 'description'];
+            if (!in_array($field, $allowedFields)) {
+                die("Invalid field!");
+            }
+
+            $success = $this->projectRepository->updateProjectField($projectId, $field, $value);
+
+            if ($success) {
+                header("Location: /project/$projectId");
+                exit();
+            } else {
+                die("Error updating project.");
+            }
+        }
+    }
+
+    public function addTask() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /login');
             exit();
         }
 
-        $project = getProjectById($projectId);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $projectId = $_POST['project_id'];
+            $description = trim($_POST['description']);
+            $assignedUserId = $_POST['assigned_user'];
 
-        if (!$project) {
-            echo "Project not found.";
-            http_response_code(404);
+            if (empty($description)) {
+                die("Task description cannot be empty!");
+            }
+
+            $this->taskRepository->insertTask($projectId, $description, $assignedUserId);
+
+            header("Location: /project/$projectId");
             exit();
         }
-
-        $tasks = getTasksByProjectId($projectId);
-
-        $this->render('project', [
-            'project' => $project,
-            'tasks' => $tasks
-        ]);
     }
     public function addProject() {
         if (session_status() === PHP_SESSION_NONE) {
@@ -67,21 +119,32 @@ class ProjectController extends AppController {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-
+    
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = $_POST['name'] ?? null;
             $description = $_POST['description'] ?? null;
             $manager_id = $_POST['manager_id'] ?? null;
             $status = $_POST['status'] ?? 'Pending';
-            $team_members = $_POST['team_members'] ?? [];
+            $teamMembers = isset($_POST['team_members']) ? (array) $_POST['team_members'] : [];
 
-            if ($name && $manager_id) {
-                $this->projectRepository->insertProject($name, $description, $manager_id, $status, $team_members);
-                header('Location: /dashboard');
+    
+            if (!$name || !$description || !$manager_id) {
+                echo "All fields are required!";
                 exit();
             }
+    
+            $projectId = $this->projectRepository->insertProject($name, $description, $manager_id, $status, $teamMembers);
+    
+            foreach ($teamMembers as $memberId) {
+                $role = $this->teamRepository->getUserRoleById($memberId);
+                $this->teamRepository->addMemberToProject($projectId, $memberId, $role);
+            }
+    
+            header("Location: /dashboard");
+            exit();
         }
     
-        $this->render('addProject', ['error' => 'All fields are required.']);
+        header("Location: /addProject");
+        exit();
     }
 }

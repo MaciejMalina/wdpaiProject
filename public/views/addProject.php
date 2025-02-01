@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-    <a href="/dashboard" class="back-button">Back</a>
+        <a href="/dashboard" class="back-button">Back</a>
         <h1>Add New Project</h1>
         <form method="POST" action="/createProject">
             <label for="name"><strong>Project Name:</strong></label>
@@ -24,14 +24,18 @@
                 <?php endforeach; ?>
             </select>
 
-            <label for="team">Select Team Members:</label>
-            <select name="team[]" id="team" multiple>
+            <label><strong>Team Members:</strong></label>
+            <div class="team-members-container">
                 <?php foreach ($users as $user): ?>
-                    <option value="<?= $user['id'] ?>"><?= htmlspecialchars($user['name']) ?> (<?= $user['role'] ?>)</option>
+                    <div class="team-member">
+                        <input type="checkbox" id="user_<?= $user['id'] ?>" name="team_members[]" value="<?= $user['id'] ?>">
+                        <label for="user_<?= $user['id'] ?>"><?= htmlspecialchars($user['name']) ?></label>
+                        <span class="role"><?= htmlspecialchars($user['role']) ?></span>
+                    </div>
                 <?php endforeach; ?>
-            </select>
+            </div>
 
-            <label for="status">Status:</label>
+            <label for="status"><strong>Status:</strong></label>
             <select name="status" id="status">
                 <option value="Active">Active</option>
                 <option value="Completed">Completed</option>
@@ -39,7 +43,7 @@
                 <option value="On Hold">On Hold</option>
             </select>
 
-         <button type="submit">Create Project</button>
+            <button type="submit">Create Project</button>
         </form>
     </div>
 </body>

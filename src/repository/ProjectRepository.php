@@ -8,6 +8,29 @@ class ProjectRepository {
         $this->db = new Database();
     }
 
+    public function getProjectById($id) {
+        if (empty($id) || !is_numeric($id)) {
+            return null;
+        }
+        $database = new Database();
+        $db = $database->connect();
+        $stmt = $this->db->connect()->prepare("SELECT * FROM projects WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function updateProjectField($projectId, $field, $value) {
+        $database = new Database();
+        $db = $database->connect();
+        $stmt = $this->db->connect()->prepare("UPDATE projects SET $field = :value WHERE id = :id");
+        return $stmt->execute([
+            ':value' => $value,
+            ':id' => $projectId
+        ]);
+    }
+
     public function getAllProjects() {
         $database = new Database();
         $db = $database->connect();
@@ -54,20 +77,54 @@ class ProjectRepository {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function insertProject($name, $description, $manager_id, $status, $team_members) {
-        $database = new Database();
-        $db = $database->connect();
-
-        $teamString = implode(", ", $team_members);
-        $stmt = $this->db->connect()->prepare("INSERT INTO projects (name, manager_id, status, team, created_at, description) 
-        VALUES (:name, :manager_id, :status, :team, NOW(), :description)");
-
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':manager_id', $manager_id);
-        $stmt->bindParam(':status', $status);
-        $stmt->bindParam(':team', $teamString);
-        $stmt->bindParam(':description', $description);
-
-        return $stmt->execute();
+    public function insertProject($name, $description, $managerId, $status, $teamMembers) {
+        try {
+            $database = new Database();
+            $db = $database->connect();
+    
+            $db->beginTransaction();  // ✅ Początek transakcji
+    
+            // ✅ Wstawianie nowego projektu i pobranie jego ID
+            $stmt = $db->prepare("
+                INSERT INTO projects (name, manager_id, status, description) 
+                VALUES (:name, :manager_id, :status, :description) RETURNING id
+            ");
+            $stmt->execute([
+                ':name' => $name,
+                ':manager_id' => $managerId,
+                ':status' => $status,
+                ':description' => $description
+            ]);
+            $projectId = $stmt->fetchColumn();
+    
+            // ✅ Obsługa pustej tablicy członków zespołu
+            if (!is_array($teamMembers)) {
+                $teamMembers = [];
+            }
+    
+            // ✅ Wstawianie członków zespołu
+            $stmtTeam = $db->prepare("
+                INSERT INTO project_team (project_id, user_id, role) 
+                VALUES (:project_id, :user_id, :role)
+            ");
+    
+            foreach ($teamMembers as $member) {
+                if (is_array($member) && isset($member['id'], $member['role'])) {
+                    $stmtTeam->execute([
+                        ':project_id' => $projectId,
+                        ':user_id' => $member['id'],
+                        ':role' => $member['role']
+                    ]);
+                }
+            }
+    
+            $db->commit();  // ✅ Zatwierdzenie transakcji
+            return $projectId;
+        } catch (Exception $e) {
+            if ($db->inTransaction()) {  // ✅ Sprawdzenie, czy transakcja istnieje przed rollBack()
+                $db->rollBack();
+            }
+            throw new Exception("Błąd podczas dodawania projektu: " . $e->getMessage());
+        }
     }
 }
