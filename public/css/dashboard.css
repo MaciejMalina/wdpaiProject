@@ -138,6 +138,7 @@ body {
     }
 
     .dashboard-container {
+        margin-top: 30px;
         grid-template-columns: 1fr;
         padding: 100px 15px 20px;
     }

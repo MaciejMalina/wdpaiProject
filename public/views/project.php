@@ -15,10 +15,10 @@
     <div class="header">
         <button class="back-button" onclick="location.href='/dashboard'">Back</button>
         <h1><?= htmlspecialchars($project['name'] ?? 'Unknown Project') ?></h1>
-        <div class="nav-links">
+        <nav>
             <a href="/profile" class="account">Account</a>
-            <a href="/logout" class="account">Logout</a>
-        </div>
+            <a href="/logout" class="logout">Logout</a>
+        </nav>
     </div>
     <div class="content">
     <div class="project-details">

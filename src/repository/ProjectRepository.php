@@ -68,17 +68,18 @@ class ProjectRepository {
     public function getProjectsByAssignedTasks($userId) {
         $database = new Database();
         $db = $database->connect();
-        $stmt = $this->db->connect()->prepare("
+        $stmt = $db->prepare("
             SELECT DISTINCT p.* 
             FROM projects p
             JOIN tasks t ON p.id = t.project_id
-            WHERE t.assigned_user_id = :user_id
+            WHERE t.assigned_to = :user_id
         ");
         $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
+
     public function insertProject($name, $description, $managerId, $status, $teamMembers) {
         try {
             $database = new Database();

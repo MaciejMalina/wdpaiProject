@@ -3,7 +3,7 @@ CREATE TABLE users (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    role VARCHAR(20) CHECK (role IN ('admin', 'manager', 'developer', 'tester', 'analyst', 'designer')) DEFAULT 'user',
+    role VARCHAR(20) CHECK (role IN ('admin', 'manager', 'developer', 'tester', 'analyst', 'designer', 'user')),
     phone VARCHAR(20),
     address VARCHAR(255),
     position VARCHAR(50),
