@@ -12,7 +12,10 @@
     <div class="header">
         <h1>Your Projects</h1>
         <nav>
-            <a href="/addProject" class="add-project-button">+ Add Project</a>
+            <?php if (isset($_SESSION['user_id']) && isset($_SESSION['role']) 
+                && in_array($_SESSION['role'], ['admin', 'manager'])): ?>
+                <a href="/addProject" class="add-project-button">+ Add Project</a>
+            <?php endif; ?>
             <a href="/profile" class="account">Account</a>
             <a href="/logout" class="logout">Logout</a>
         </nav>
