@@ -104,10 +104,12 @@ class ProjectController extends AppController {
                 exit();
             }
     
-            $assignedTo = !empty($assignedName) ? $this->teamRepository->getUserIdByName($assignedName) : null;
+            if (!is_numeric($assignedTo) && !empty($assignedTo)) {
+                $assignedTo = $this->teamRepository->getUserIdByName($assignedTo);
+            }
             
-            if ($assignedTo === null && !empty($assignedName)) {
-                $_SESSION['error'] = "User '$assignedName' not found in database!";
+            if ($assignedTo === null && !empty($assignedTo)) {
+                $_SESSION['error'] = "User '$assignedTo' not found in database!";
                 header("Location: /project?id=$projectId");
                 exit();
             }
