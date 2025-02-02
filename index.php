@@ -11,15 +11,15 @@ Router::get('logout', 'SecurityController');
 Router::get('dashboard', 'DashboardController');
 Router::get('profile', 'ProfileController');
 Router::get('project', 'ProjectController');
-Router::get('project?id={id}', 'ProjectController');
 Router::get('addProject', 'ProjectController');
 
 
 Router::post('login', 'SecurityController');
 Router::post('register', 'SecurityController');
 Router::post('updateProfile', 'ProfileController');
-Router::post('update-project', 'ProjectController');
+Router::post('updateProject', 'ProjectController');
 Router::post('createProject', 'ProjectController');
-
+Router::post('addTeamMember', 'ProjectController');
+Router::post('addTask', 'ProjectController');
 
 Router::run($path);

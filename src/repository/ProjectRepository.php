@@ -19,15 +19,18 @@ class ProjectRepository {
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 
-    public function updateProjectField($projectId, $field, $value) {
-        $database = new Database();
-        $db = $database->connect();
-        $stmt = $this->db->connect()->prepare("UPDATE projects SET $field = :value WHERE id = :id");
-        return $stmt->execute([
-            ':value' => $value,
-            ':id' => $projectId
+    public function updateProject($id, $name, $status, $description) {
+        $stmt = $this->db->connect()->prepare("
+            UPDATE projects SET name = :name, status = :status, description = :description WHERE id = :id
+        ");
+        $stmt->execute([
+            ':name' => $name,
+            ':status' => $status,
+            ':description' => $description,
+            ':id' => $id
         ]);
     }
+    
 
     public function getAllProjects() {
         $database = new Database();
@@ -75,6 +78,7 @@ class ProjectRepository {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
     public function insertProject($name, $description, $managerId, $status, $teamMembers) {
         try {
             $database = new Database();

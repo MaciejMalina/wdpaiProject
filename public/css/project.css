@@ -14,14 +14,14 @@ body {
     background-color: #FF5722;
     color: white;
     width: 100%;
-    padding: 15px 20px;
+    padding: 15px 0px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: sticky;
     top: 0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    z-index: 10;
+    z-index: 1000;
 }
 
 .header .nav-links {
@@ -35,23 +35,42 @@ body {
     margin: 0 auto;
     font-size: 1.8rem;
     text-align: center;
+    font-weight: bold;
 }
 
 .back-button {
     background-color: white;
     color: #FF5722;
-    border: none;
+    border: 2px solid #FF5722;
+    margin-left: 10px;
     border-radius: 5px;
-    padding: 8px 15px;
+    padding: 10px 15px;
     font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s;
-    margin-left: 10px;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-.back-button:hover {
-    background-color: #FFCCBC;
+.edit-button, .save-button {
+    background-color: #FF5722;
+    color: white;
+    border: 2px solid #FF5722;
+    margin-left: 10px;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
 }
+
+.back-button:hover{
+    background-color: #FF5722;
+    color: white;
+}
+.edit-button:hover, .save-button:hover {
+    background-color: white;
+    color: #FF5722;
+}
+
 
 .account {
     text-decoration: none;
@@ -64,7 +83,7 @@ body {
 }
 
 .account:hover {
-    background-color: #FFCCBC;
+    background-color: #E64A19;
 }
 
 .content {
@@ -98,6 +117,7 @@ body {
 
 .project-details p {
     margin: 10px 0;
+    font-size: 1rem;
 }
 
 .project-details ul {
@@ -115,62 +135,64 @@ body {
     border-bottom: 1px solid #ddd;
 }
 
-.project-details li span {
-    flex: 1;
-    text-align: left;
-}
-
-.edit-button {
-    padding: 7px 12px;
-    background-color: #FF5722;
-    color: white;
-    border: none;
+form {
+    display: none;
+    background-color: #f9f9f9;
+    padding: 15px;
     border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-size: 1rem;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    width: 100%;
+    max-width: 600px;
 }
 
-.edit-button:hover {
-    background-color: #E64A19;
+form label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
 }
 
-textarea, input[type="text"] {
+textarea, input[type="text"], select {
     width: 100%;
     padding: 10px;
-    margin-top: 10px;
+    margin-top: 5px;
     border-radius: 5px;
     border: 1px solid #ddd;
     resize: none;
     font-size: 1rem;
 }
 
-.save-button {
-    display: block;
+.tasks-table {
     width: 100%;
-    max-width: 200px;
-    margin: 20px auto;
-    padding: 10px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.tasks-table th, .tasks-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.tasks-table th {
     background-color: #FF5722;
     color: white;
-    transition: background-color 0.3s;
+    text-align: left;
 }
 
-.save-button:hover {
-    background-color: #E64A19;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* Animacje */
-.project-details li {
-    transition: all 0.3s ease-in-out;
-}
-
-.project-details li:hover {
-    background-color: #FFCCBC;
+.show {
+    display: block !important;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 @media (max-width: 768px) {
@@ -184,10 +206,7 @@ textarea, input[type="text"] {
 
     .back-button {
         font-size: 0.9rem;
-    }
-
-    .project-details textarea {
-        height: 35px;
+        padding: 7px 12px;
     }
 }
 
@@ -209,9 +228,5 @@ textarea, input[type="text"] {
     .project-details p,
     .project-details li span {
         font-size: 0.9rem;
-    }
-
-    .project-details textarea {
-        height: 30px;
     }
 }

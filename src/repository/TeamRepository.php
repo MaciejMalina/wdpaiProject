@@ -44,15 +44,27 @@ class TeamRepository {
     public function addMemberToProject($projectId, $userId) {
         $database = new Database();
         $db = $database->connect();
+
+        $checkStmt = $db->connect()->prepare("SELECT COUNT(*) FROM project_team WHERE project_id = :project_id AND user_id = :user_id");
+        $checkStmt->execute([
+            ':project_id' => $projectId,
+            ':user_id' => $userId
+        ]);
+        $exists = $checkStmt->fetchColumn();
+        if ($exists > 0) {
+            throw new Exception("User is already assigned to this project.");
+        }
+
         $stmt = $this->db->connect()->prepare("
-        INSERT INTO project_team (project_id, user_id, role)
-        VALUES (:project_id, :user_id, :role)
+            INSERT INTO project_team (project_id, user_id, role) 
+            SELECT :project_id, id, role FROM users WHERE id = :user_id
         ");
-        $stmt->bindParam(':project_id', $projectId, PDO::PARAM_INT);
-        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
-        $stmt->bindParam(':role', $role, PDO::PARAM_STR);
-        $stmt->execute();
+        $stmt->execute([
+            ':project_id' => $projectId,
+            ':user_id' => $userId
+        ]);
     }
+    
 
     public function getTeamRoles($teamString) {
         $database = new Database();
@@ -100,5 +112,11 @@ class TeamRepository {
         $stmt->execute();
         return $stmt->fetchColumn();
     }
-    
+    public function getUserIdByName($name) {
+        $database = new Database();
+        $db = $database->connect();
+        $stmt = $this->db->connect()->prepare("SELECT id FROM users WHERE name = :name LIMIT 1");
+        $stmt->execute([':name' => $name]);
+        return $stmt->fetchColumn();
+    }
 }

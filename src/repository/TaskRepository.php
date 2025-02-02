@@ -23,14 +23,18 @@ class TaskRepository {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function insertTask($projectId, $description, $assignedUserId) {
+    public function insertTask($projectId, $description, $assignedTo, $status) {
         $database = new Database();
         $db = $database->connect();
-        $stmt = $this->db->connect()->prepare("INSERT INTO tasks (project_id, description, assigned_user_id) VALUES (:project_id, :description, :assigned_user_id)");
-        return $stmt->execute([
+        $stmt = $this->db->connect()->prepare("
+            INSERT INTO tasks (project_id, description, assigned_to, status) 
+            VALUES (:project_id, :description, :assigned_to, :status)
+        ");
+        $stmt->execute([
             ':project_id' => $projectId,
             ':description' => $description,
-            ':assigned_user_id' => $assignedUserId
+            ':assigned_to' => $assignedTo,
+            ':status' => $status
         ]);
     }
 }

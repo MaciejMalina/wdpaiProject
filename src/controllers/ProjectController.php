@@ -27,6 +27,7 @@ class ProjectController extends AppController {
             header('Location: /login');
             exit();
         }
+        
         $id = $_GET['id'] ?? null;
 
         if (!$id || !is_numeric($id)) {
@@ -39,13 +40,15 @@ class ProjectController extends AppController {
             exit();
         }
 
-        $teamRoles = $this->teamRepository->getTeamMembersByProject($id);
+        $teamMembers = $this->teamRepository->getTeamMembersByProject($id);
         $tasks = $this->projectRepository->getTasksForProject($project['name']);
-
+        $allUsers = $this->teamRepository->getAllUsers();
+        
         $this->render('project', [
             'project' => $project,
-            'teamRoles' => $teamRoles,
-            'tasks' => $tasks
+            'teamMembers' => $teamMembers,
+            'tasks' => $tasks,
+            'allUsers' => $allUsers
         ]);
     }
 
@@ -58,25 +61,21 @@ class ProjectController extends AppController {
             header('Location: /login');
             exit();
         }
+        if (!$this->isAuthorized()) {
+            die("Access Denied");
+        }
+
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $projectId = $_POST['project_id'];
-            $field = $_POST['field'];
-            $value = trim($_POST['value']);
-
-            $allowedFields = ['name', 'status', 'description'];
-            if (!in_array($field, $allowedFields)) {
-                die("Invalid field!");
-            }
-
-            $success = $this->projectRepository->updateProjectField($projectId, $field, $value);
-
-            if ($success) {
-                header("Location: /project/$projectId");
-                exit();
-            } else {
-                die("Error updating project.");
-            }
+            $name = trim($_POST['name']);
+            $status = trim($_POST['status']);
+            $description = trim($_POST['description']);
+    
+            $this->projectRepository->updateProject($projectId, $name, $status, $description);
+            
+            header("Location: /project?id=$projectId");
+            exit();
         }
     }
 
@@ -89,19 +88,34 @@ class ProjectController extends AppController {
             header('Location: /login');
             exit();
         }
-
+        if (!$this->isAuthorized()) {
+            die("Access Denied");
+        }
+    
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $projectId = $_POST['project_id'];
             $description = trim($_POST['description']);
-            $assignedUserId = $_POST['assigned_user'];
+            $assignedTo = !empty($_POST['assigned_to']) ? $_POST['assigned_to'] : null;
+            $status = $_POST['status'] ?? 'Pending';
 
             if (empty($description)) {
-                die("Task description cannot be empty!");
+                $_SESSION['error'] = "Task description cannot be empty!";
+                header("Location: /project?id=$projectId");
+                exit();
+            }
+    
+            $assignedTo = !empty($assignedName) ? $this->teamRepository->getUserIdByName($assignedName) : null;
+            
+            if ($assignedTo === null && !empty($assignedName)) {
+                $_SESSION['error'] = "User '$assignedName' not found in database!";
+                header("Location: /project?id=$projectId");
+                exit();
             }
 
-            $this->taskRepository->insertTask($projectId, $description, $assignedUserId);
-
-            header("Location: /project/$projectId");
+            $this->taskRepository->insertTask($projectId, $description, $assignedTo, $status);
+    
+            $_SESSION['message'] = "Task added successfully!";
+            header("Location: /project?id=$projectId");
             exit();
         }
     }
@@ -153,4 +167,37 @@ class ProjectController extends AppController {
         header("Location: /addProject");
         exit();
     }
+    private function isAuthorized() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+    
+        return isset($_SESSION['user_id']) && isset($_SESSION['role']) 
+               && in_array($_SESSION['role'], ['admin', 'manager']);
+    }
+    
+    public function addTeamMember() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!$this->isAuthorized()) {
+            die("Access Denied");
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $projectId = $_POST['project_id'];
+            $userId = $_POST['user_id'];
+
+            try {
+                $this->teamRepository->addMemberToProject($projectId, $userId);
+                $_SESSION['message'] = "User added successfully!";
+            } catch (Exception $e) {
+                $_SESSION['error'] = $e->getMessage();
+            }
+    
+            header("Location: /project?id=$projectId");
+            exit();
+        }
+    }
+
 }
