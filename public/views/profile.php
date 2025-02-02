@@ -73,7 +73,7 @@ $isUser = isset($_SESSION['user_id']);
                 </p>
                 <p class="profile-row">
                     <strong>Password:</strong>
-                    <span id="user-password"><?= htmlspecialchars($user['password'] ?? '') ?></span>
+                    <span id="user-password">*********</span>
                     <input id="password-input" type="password" name="password" value="<?= htmlspecialchars($user['password'] ?? '') ?>" style="display: none;">
                     <div class="button-container">
                         <button type="button" onclick="toggleEdit('password')" class="edit-button">Edit</button>

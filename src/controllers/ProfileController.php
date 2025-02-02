@@ -33,17 +33,17 @@ class ProfileController extends AppController {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-
+    
         $database = new Database();
         $db = $database->connect();
-
+    
         if (!isset($_SESSION['user_id'])) {
             header('Location: /login');
             exit();
         }
-
+    
         $user_id = $_SESSION['user_id'];
-
+    
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = isset($_POST['name']) ? trim($_POST['name']) : null;
             $email = isset($_POST['email']) ? trim($_POST['email']) : null;
@@ -53,42 +53,56 @@ class ProfileController extends AppController {
             $address = isset($_POST['address']) ? trim($_POST['address']) : null;
             $position = isset($_POST['position']) ? trim($_POST['position']) : null;
             $department = isset($_POST['department']) ? trim($_POST['department']) : null;
-            
-
+    
             $messages = [];
-
+    
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $messages[] = "Błąd: Nieprawidłowy format adresu e-mail.";
             }
-
-            if (empty($messages)) {
-                try {
-                    $stmt = $db->prepare("UPDATE users SET name = :name, email = :email, password = :password, role = :role, phone = :phone, address = :address, position = :position, department = :department WHERE id = :id");
-
-                    $stmt->bindParam(':name', $name);
-                    $stmt->bindParam(':email', $email);
-                    $stmt->bindParam(':password', $password);
-                    $stmt->bindParam(':role', $role);
-                    $stmt->bindParam(':phone', $phone);
-                    $stmt->bindParam(':address', $address);
-                    $stmt->bindParam(':position', $position);
-                    $stmt->bindParam(':department', $department);
-                    $stmt->bindParam(':id', $user_id);
-
-                    if ($stmt->execute()) {
-                        $messages[] = "Dane zostały zaktualizowane.";
-                    } else {
-                        $messages[] = "Błąd: Wystąpił błąd podczas aktualizacji danych.";
-                    }
-                } catch (Exception $e) {
-                    $messages[] = "Błąd: " . $e->getMessage();
+    
+            try {
+                $stmt = $db->prepare("SELECT password FROM users WHERE id = :id");
+                $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+                $stmt->execute();
+                $currentUser = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+                if (!$currentUser) {
+                    throw new Exception("Błąd: Użytkownik nie istnieje.");
                 }
+    
+                if (!empty($password)) {
+                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                } else {
+                    $hashedPassword = $currentUser['password'];
+                }
+    
+                $stmt = $db->prepare("UPDATE users 
+                    SET name = :name, email = :email, password = :password, role = :role, 
+                        phone = :phone, address = :address, position = :position, department = :department 
+                    WHERE id = :id");
+    
+                $stmt->bindParam(':name', $name);
+                $stmt->bindParam(':email', $email);
+                $stmt->bindParam(':password', $hashedPassword);
+                $stmt->bindParam(':role', $role);
+                $stmt->bindParam(':phone', $phone);
+                $stmt->bindParam(':address', $address);
+                $stmt->bindParam(':position', $position);
+                $stmt->bindParam(':department', $department);
+                $stmt->bindParam(':id', $user_id);
+    
+                if ($stmt->execute()) {
+                    $messages[] = "Dane zostały zaktualizowane.";
+                } else {
+                    $messages[] = "Błąd: Wystąpił błąd podczas aktualizacji danych.";
+                }
+            } catch (Exception $e) {
+                $messages[] = "Błąd: " . $e->getMessage();
             }
-
+    
             $this->render('profile', ['messages' => $messages, 'user' => [
                 'name' => $name,
                 'email' => $email,
-                'password' => $password,
                 'role' => $role,
                 'phone' => $phone,
                 'address' => $address,
@@ -97,6 +111,7 @@ class ProfileController extends AppController {
             ]]);
         }
     }
+    
     public function getUserById($id) {
         $database = new Database();
         $db = $database->connect();

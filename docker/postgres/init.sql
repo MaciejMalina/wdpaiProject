@@ -42,14 +42,15 @@ CREATE TABLE tasks (
 );
 
 INSERT INTO users (name, email, password, role, phone, address, position, department) VALUES
-('Maciej Malina', 'maciej.malina@gmail.com', 'password1', 'admin', '+48 996 202 101', 'Krakow, Poland', 'CEO', 'CEO'),
-('John Smith', 'john.smith@example.com', 'password2', 'manager', '+48 600 700 800', 'Warsaw, Poland', 'Project Manager', 'IT'),
-('Jane Doe', 'jane.doe@example.com', 'password3', 'manager', '+48 600 111 222', 'Krakow, Poland', 'Project Manager', 'IT'),
-('Emily Johnson', 'emily.johnson@example.com', 'password4', 'developer', '+48 600 333 444', 'Gdansk, Poland', 'Frontend Developer', 'IT'),
-('Michael Brown', 'michael.brown@example.com', 'password5', 'developer', '+48 600 555 666', 'Poznan, Poland', 'Backend Developer', 'IT'),
-('Olivia Green', 'olivia.green@example.com', 'password6', 'tester', '+48 600 777 888', 'Wroclaw, Poland', 'QA Tester', 'Quality Assurance'),
-('James White', 'james.white@example.com', 'password7', 'analyst', '+48 600 999 000', 'Lodz, Poland', 'Business Analyst', 'Business'),
-('Sophia Black', 'sophia.black@example.com', 'password8', 'designer', '+48 601 222 333', 'Katowice, Poland', 'UI/UX Designer', 'Design');
+('Maciej Malina', 'maciej.malina@gmail.com',  '$2y$10$xWZJVg1MB.ZUKl/mYP2lveVuco0ZyrbualcG9HsL5YIzI8xyUxxIC', 'admin', '+48 996 202 101', 'Krakow, Poland', 'CEO', 'CEO'),
+('John Smith', 'john.smith@example.com',     '$2y$10$JLqnv1rNBMCgcb.cULa0lejUFiAvvKRFspf6vgUpP7OGwNOn5Qobi', 'manager', '+48 600 700 800', 'Warsaw, Poland', 'Project Manager', 'IT'),
+('Jane Doe', 'jane.doe@example.com',         '$2y$10$8Kq9jOOfFbXzje/Pj3ZnXeOTZ2sFSZPDeH/ZwMMSlI7Jl0KoVhTCS', 'manager', '+48 600 111 222', 'Krakow, Poland', 'Project Manager', 'IT'),
+('Emily Johnson', 'emily.johnson@example.com', '$2y$10$Hpx.ZwW9cLbXf5G8n0p/EOrUdL.A0/pRhrT8mB3sxOHJ6c1XXzI2K', 'developer', '+48 600 333 444', 'Gdansk, Poland', 'Frontend Developer', 'IT'),
+('Michael Brown', 'michael.brown@example.com', '$2y$10$LLxIIfbR3MvODxchEYZCYe57fJPGXIAHh2qsNUf2yWgQZE8AlN552', 'developer', '+48 600 555 666', 'Poznan, Poland', 'Backend Developer', 'IT'),
+('Olivia Green', 'olivia.green@example.com',  '$2y$10$C1Wv1s2Bm8w3yFjM7N.B8eXTn4D2Qv1XTrUklwQ9O7pWbsHrH2L5m', 'tester', '+48 600 777 888', 'Wroclaw, Poland', 'QA Tester', 'Quality Assurance'),
+('James White', 'james.white@example.com',    '$2y$10$M2O5G8a1XT7pFjLwQ9Nw4e3kXB6n1TPzWJf2RhlTYM7sX5PbnWQ9O', 'analyst', '+48 600 999 000', 'Lodz, Poland', 'Business Analyst', 'Business'),
+('Sophia Black', 'sophia.black@example.com',  '$2y$10$J2Z9QnX3L1pB8a2fW76OXT5M7HqV9/N.BFjWklTYM7X2YbsHrTzL6', 'designer', '+48 601 222 333', 'Katowice, Poland', 'UI/UX Designer', 'Design');
+
 
 INSERT INTO projects (name, manager_id, status, description) VALUES
 ('Project Alpha', 2, 'Active', 'Developing a new web platform for client X.'),

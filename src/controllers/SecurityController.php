@@ -24,11 +24,12 @@ class SecurityController extends AppController {
                 if ($stmt->fetch()) {
                     $error = "Email already in use!";
                 } else {
+                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                     $stmt = $db->prepare('INSERT INTO users (name, email, password) VALUES (:name, :email, :password)');
                     $stmt->execute([
                         'name' => $name,
                         'email' => $email,
-                        'password' => $password
+                        'password' => $hashedPassword
                     ]);
                     header('Location: /login');
                     exit();
@@ -55,7 +56,7 @@ class SecurityController extends AppController {
                 $stmt->execute();
                 $user = $stmt->fetch(PDO::FETCH_ASSOC);
         
-                if ($user && $user['password'] === $password) {
+                if ($user && password_verify($password, $user['password'])) {
                     $_SESSION['user_id'] = $user['id'];
                     $_SESSION['role'] = $user['role'];
         
