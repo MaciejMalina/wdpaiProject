@@ -13,7 +13,6 @@ Router::get('profile', 'ProfileController');
 Router::get('project', 'ProjectController');
 Router::get('addProject', 'ProjectController');
 
-
 Router::post('login', 'SecurityController');
 Router::post('register', 'SecurityController');
 Router::post('updateProfile', 'ProfileController');
