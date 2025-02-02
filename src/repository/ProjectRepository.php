@@ -12,13 +12,11 @@ class ProjectRepository {
         if (empty($id) || !is_numeric($id)) {
             return null;
         }
-        $database = new Database();
-        $db = $database->connect();
         $stmt = $this->db->connect()->prepare("SELECT * FROM projects WHERE id = :id");
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 
     public function updateProjectField($projectId, $field, $value) {
@@ -82,9 +80,8 @@ class ProjectRepository {
             $database = new Database();
             $db = $database->connect();
     
-            $db->beginTransaction();  // ✅ Początek transakcji
-    
-            // ✅ Wstawianie nowego projektu i pobranie jego ID
+            $db->beginTransaction();
+ 
             $stmt = $db->prepare("
                 INSERT INTO projects (name, manager_id, status, description) 
                 VALUES (:name, :manager_id, :status, :description) RETURNING id
@@ -97,12 +94,10 @@ class ProjectRepository {
             ]);
             $projectId = $stmt->fetchColumn();
     
-            // ✅ Obsługa pustej tablicy członków zespołu
             if (!is_array($teamMembers)) {
                 $teamMembers = [];
             }
-    
-            // ✅ Wstawianie członków zespołu
+
             $stmtTeam = $db->prepare("
                 INSERT INTO project_team (project_id, user_id, role) 
                 VALUES (:project_id, :user_id, :role)
@@ -118,13 +113,30 @@ class ProjectRepository {
                 }
             }
     
-            $db->commit();  // ✅ Zatwierdzenie transakcji
+            $db->commit();
             return $projectId;
         } catch (Exception $e) {
-            if ($db->inTransaction()) {  // ✅ Sprawdzenie, czy transakcja istnieje przed rollBack()
+            if ($db->inTransaction()) {
                 $db->rollBack();
             }
             throw new Exception("Błąd podczas dodawania projektu: " . $e->getMessage());
         }
     }
+    public function getProjectDetailsById($id) {
+        $database = new Database();
+        $db = $database->connect();
+        $stmt = $this->db->connect()->prepare("SELECT * FROM project_details WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+    public function getTasksForProject($projectName) {
+        $database = new Database();
+        $db = $database->connect();
+        $stmt = $this->db->connect()->prepare("SELECT * FROM task_details WHERE project = :projectName");
+        $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
 }

@@ -87,11 +87,11 @@ INSERT INTO tasks (project_id, description, assigned_to, status) VALUES
 
 
 CREATE VIEW project_details AS
-SELECT p.id, p.name, u.name AS manager, p.status, COUNT(pt.user_id) AS team_size
+SELECT p.id, p.name, p.description, u.name AS manager, p.status, COUNT(pt.user_id) AS team_size
 FROM projects p
 JOIN users u ON p.manager_id = u.id
 LEFT JOIN project_team pt ON p.id = pt.project_id
-GROUP BY p.id, p.name, u.name, p.status;
+GROUP BY p.id, p.name, p.description, u.name, p.status;
 
 CREATE VIEW task_details AS
 SELECT t.id, t.description, t.status, u.name AS assigned_user, p.name AS project

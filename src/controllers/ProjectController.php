@@ -27,14 +27,20 @@ class ProjectController extends AppController {
             header('Location: /login');
             exit();
         }
-        $project = $this->projectRepository->getProjectById($id);
+        $id = $_GET['id'] ?? null;
+
+        if (!$id || !is_numeric($id)) {
+            die("No valid project ID provided!");
+        }
+    
+        $project = $this->projectRepository->getProjectDetailsById($id);
         if (!$project) {
             echo "Project not found!";
             exit();
         }
 
         $teamRoles = $this->teamRepository->getTeamMembersByProject($id);
-        $tasks = $this->projectRepository->getTasksByProject($id);
+        $tasks = $this->projectRepository->getTasksForProject($project['name']);
 
         $this->render('project', [
             'project' => $project,

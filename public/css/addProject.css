@@ -79,7 +79,6 @@ button {
 }
 
 .back-button {
-    display: inline-block;
     margin-bottom: 15px;
     padding: 8px 15px;
     background-color: #FF5722;
@@ -157,7 +156,12 @@ button:hover {
         border-radius: 5px;
         text-decoration: none;
         font-weight: bold;
-        display: inline-block;
     }
 
+}
+
+@media (max-width: 460px) {
+    .back-button {
+        margin-top: 100px;
+    }
 }
